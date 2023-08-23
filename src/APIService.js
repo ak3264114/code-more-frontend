@@ -81,7 +81,7 @@ async function verifyEmail(token) {
       },
     }
   );
-  return response.json();
+  return response;
 }
 
 

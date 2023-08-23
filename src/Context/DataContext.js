@@ -6,9 +6,9 @@ export const DataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [snackOpen, setSnackOpen] = useState(true);
-    const [snackType, setSnackType] = useState("info");
-    const [snackMessage, setSnackMessage] = useState("Welcome");
+    const [snackOpen, setSnackOpen] = useState(false);
+    const [snackType, setSnackType] = useState("");
+    const [snackMessage, setSnackMessage] = useState("");
     if(localStorage.loginToken){
         // console.log(localStorage.loginToken)
         APIService.checklogin(localStorage.loginToken).then(response =>{
