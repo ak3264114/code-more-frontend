@@ -4,8 +4,11 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
+    font-family: "Poppins";
+    font-weight: 300;
+    background-image: url('../src/components/img/bg-pattern-top.svg');
+    background-color: #19a2ae;
   }
-  
   .flip-card {
     background-color: transparent;
     width: 300px;

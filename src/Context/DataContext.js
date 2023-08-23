@@ -5,7 +5,10 @@ import APIService from '../APIService'
 export const DataContext = createContext();
 
 const DataContextProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [snackOpen, setSnackOpen] = useState(true);
+    const [snackType, setSnackType] = useState("info");
+    const [snackMessage, setSnackMessage] = useState("Welcome");
     if(localStorage.loginToken){
         // console.log(localStorage.loginToken)
         APIService.checklogin(localStorage.loginToken).then(response =>{
@@ -16,7 +19,7 @@ const DataContextProvider = ({ children }) => {
         })
     }
     return (
-        <DataContext.Provider value={{ isLoggedIn }} >{children}</DataContext.Provider>
+        <DataContext.Provider value={{ isLoggedIn  ,snackOpen , snackType , snackMessage ,setSnackOpen ,setSnackType ,setSnackMessage}} >{children}</DataContext.Provider>
     )
 }
 
