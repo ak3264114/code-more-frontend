@@ -15,6 +15,7 @@ const Login = () => {
   const history = useHistory();
 
   async function handleSubmit() {
+    setRequestSended(true);
     try {
       const response = await APIService.login(userName, password);
       if (response.status === "succes") {
@@ -67,9 +68,9 @@ const Login = () => {
               }}
             />
           </div>
-          <div className="form-item submit">
+          <div className="form-item submit items-center">
           {requestSended ? (
-            <CircularProgress size={"20px"} />
+            <CircularProgress size={"20px"}  />
           ) : (
             <Button
               variant="text"

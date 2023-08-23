@@ -23,7 +23,7 @@ function Signup() {
     APIService.register(userData)
       .then((response) => {
         setSnackType("success");
-        setSnackMessage("SignUp SuccessFully , Please Verify your email address :)");
+        setSnackMessage(response.data.message ||"SignUp SuccessFully , Please Verify your email address :)");
         setSnackOpen(true)
         setRequestSended(false);
       })

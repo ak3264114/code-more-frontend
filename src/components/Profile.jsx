@@ -8,32 +8,37 @@ import { useEffect } from "react";
 import APIService from "../APIService";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataContext } from "../Context/DataContext";
+import { useHistory } from "react-router-dom";
 
 const Profile = () => {
   const [formData, setFormData] = useState();
   const [formOpen, setFormOpen] = useState(false);
   const [friendsData, setFriendsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {setSnackType, setSnackMessage, setSnackOpen } =useContext(DataContext);
-
+  const { isLoggedIn, setSnackType, setSnackMessage, setSnackOpen } =
+    useContext(DataContext);
+  const history = useHistory();
   const handeleChange = async (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
     APIService.getFriendsDetails(localStorage.loginToken)
-    .then((data) => {
-      setFriendsData(data.data);
-      setLoading(false);
-      setSnackType("success");
-      setSnackMessage("Data Fatched Successfully");
-      setSnackOpen(true)
-    }).catch((error) => {
-      setSnackType("error");
-      setSnackMessage("Oops an eroor occured !");
-      setSnackOpen(true);
-      setLoading(false);
-    })
+      .then((data) => {
+        setFriendsData(data.data);
+        setLoading(false);
+        setSnackType("success");
+        setSnackMessage(data.data.message || "Data Fatched Successfully");
+        console.log(data.data.message);
+        setSnackOpen(true);
+      })
+      .catch((error) => {
+        console.log("error" ,error);
+        setSnackType("error");
+        setSnackMessage(error.response.data.message ||"Oops an eroor occured !");
+        setSnackOpen(true);
+        setLoading(false);
+      });
   }, []);
   const deleteFriendId = async (friendId) => {
     try {
@@ -49,6 +54,12 @@ const Profile = () => {
       setSnackOpen(true);
     }
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      history.push("/login");
+    }
+  }, [isLoggedIn]);
 
   const handlesubmit = () => {
     let url = `${process.env.REACT_APP_BASE_URL}/api/friend/add`;

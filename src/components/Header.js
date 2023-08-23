@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { DataContext } from "../Context/DataContext";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -12,55 +11,59 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { ListItem, ListItemButton } from "@mui/material";
 
 const drawerWidth = 240;
-const navItems = ["Home"];
 
 function Header(props) {
   const { isLoggedIn } = useContext(DataContext);
-
-  const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("loginToken");
+    console.log("clicked");
+    window.location.reload();
+  };
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-      <Link to={"/"}>
-          Code More
-        </Link>
+        <Link to={"/"}>Code More</Link>
       </Typography>
       <Divider />
       {/* mobile menu */}
 
-      {isLoggedIn ? (
-        ""
-      ) : (
-        <List>
-          <div className="flex flex-col">
-            <div className="p-2 hover:bg-[#e7e7e7]">
-              <Link to={"/signup"}>Sign Up</Link>
-            </div>
-            <div className="p-2 hover:bg-[#e7e7e7]">
-              <Link to={"/login"}>Login</Link>
-            </div>
+      <List>
+        <div className="flex flex-col">
+          {isLoggedIn ? (
+            <div className="p-2 hover:bg-[#e7e7e7]" onClick={handleLogout}>
+            Logout
           </div>
-         
-        </List>
-      )}
+          ) : (
+            <>
+              <div className="p-2 hover:bg-[#e7e7e7]">
+                <Link to={"/signup"}>Sign Up</Link>
+              </div>
+              <div className="p-2 hover:bg-[#e7e7e7]">
+                <Link to={"/login"}>Login</Link>
+              </div>
+            </>
+          )}
+        </div>
+      </List>
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  // const { window } = props;
+
+  const container = undefined;
 
   return (
     <>
-      <Box sx={{ display: "flex", height: "80px"}}>
+      <Box sx={{ display: "flex", height: "80px" }}>
         <AppBar component="nav">
           <Toolbar>
             <IconButton
@@ -82,21 +85,25 @@ function Header(props) {
               </Link>
             </Typography>
 
-            {isLoggedIn ? (
-              ""
-            ) : (
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <Button sx={{ color: "#fff" }}>
-                  <Link to={"/signup"}>Sign Up</Link>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              {isLoggedIn ? (
+                <Button sx={{ color: "#fff" }} onClick={handleLogout}>
+                  Logout
                 </Button>
-                <Button sx={{ color: "#fff" }}>
-                  <Link to={"/login"}>Login</Link>
-                </Button>
-              </Box>
-            )}
+              ) : (
+                <>
+                  <Button sx={{ color: "#fff" }}>
+                    <Link to={"/signup"}>Sign Up</Link>
+                  </Button>
+                  <Button sx={{ color: "#fff" }}>
+                    <Link to={"/login"}>Login</Link>
+                  </Button>
+                </>
+              )}
+            </Box>
           </Toolbar>
         </AppBar>
-        <Box component="nav" >
+        <Box component="nav">
           <Drawer
             container={container}
             variant="temporary"
