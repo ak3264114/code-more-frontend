@@ -1,8 +1,17 @@
 import axios from "axios";
 
+async function register(body) {
+  const response = await axios.post(
+    `${process.env.REACT_APP_BACKEND_URL}/api/signup`,
+    body
+  );
+  console.log(response)
+  return response;
+}
+
 async function login(username, password) {
   const response = await axios.post(
-    `${process.env.REACT_APP_BASE_URL}/api/login`,
+    `${process.env.REACT_APP_BACKEND_URL}/api/login`,
     { username: username, password: password }
   );
   return response.data;
@@ -10,7 +19,7 @@ async function login(username, password) {
 
 async function checklogin(loginToken) {
   const response = await axios.get(
-    `${process.env.REACT_APP_BASE_URL}/api/loggeduser`,
+    `${process.env.REACT_APP_BACKEND_URL}/api/loggeduser`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +32,7 @@ async function checklogin(loginToken) {
 }
 async function getFriendsDetails(loginToken) {
   const response = await axios.get(
-    `${process.env.REACT_APP_BASE_URL}/api/friend/all`,
+    `${process.env.REACT_APP_BACKEND_URL}/api/friend/all`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +46,7 @@ async function getFriendsDetails(loginToken) {
 
 async function getuserdaetails(username) {
   const response = await axios.get(
-    `${process.env.REACT_APP_BASE_URL}/api/friend/graphqldata/${username}`,
+    `${process.env.REACT_APP_BACKEND_URL}/api/friend/graphqldata/${username}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +58,7 @@ async function getuserdaetails(username) {
   return response;
 }
 async function deleteFriendId(friendId) {
-  const url = `${process.env.REACT_APP_BASE_URL}/api/friend/delete/${friendId}`
+  const url = `${process.env.REACT_APP_BACKEND_URL}/api/friend/delete/${friendId}`
   const response = await axios.delete(
     url,
     {
@@ -62,6 +71,18 @@ async function deleteFriendId(friendId) {
   );
   return response;
 }
+async function verifyEmail(token) {
+  const url = `${process.env.REACT_APP_BACKEND_URL}/api/verifyemail/${token}`
+  const response = await axios.post(
+    url,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.json();
+}
 
 
 
@@ -73,6 +94,8 @@ const APIService = {
   getFriendsDetails,
   getuserdaetails,
   deleteFriendId,
+  verifyEmail,
+  register
 };
 
 export default APIService;

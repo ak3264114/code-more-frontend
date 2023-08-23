@@ -2,7 +2,6 @@ import './App.css';
 import Card from './components/Card';
 import Footer from './components/Footer';
 import Header from './components/Header';
-// import Signup from './components/Signup';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Signup from './components/Signup';
 import Home from './components/Home';
@@ -12,6 +11,8 @@ import ResetPassword from './components/ResetPassword';
 import DataContextProvider from './Context/DataContext';
 import './App.css'
 import Profile from './components/Profile';
+import VerifyEmail from './components/VerifyEmail';
+import SnackBar from './components/SnackBar';
 
 function App() {
   return (
@@ -37,9 +38,13 @@ function App() {
           <Route path="/profile">
             <Profile />
           </Route>
+          <Route path="/verifyemail/:token">
+            <VerifyEmail />
+          </Route>
         </Switch>
         <Footer />
       </BrowserRouter>
+      <SnackBar />
     </DataContextProvider>
   );
 }
