@@ -62,7 +62,7 @@ const Profile = () => {
   }, [isLoggedIn]);
 
   const handlesubmit = () => {
-    let url = `${process.env.REACT_APP_BASE_URL}/api/friend/add`;
+    let url = `${process.env.REACT_APP_BACKEND_URL}/api/friend/add`;
     let options = {
       method: "POST",
       headers: {

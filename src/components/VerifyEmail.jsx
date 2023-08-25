@@ -18,6 +18,7 @@ const VerifyEmail = () => {
       setSnackType("success");
       setSnackMessage(result.data.message ||"Email Verified Succesfully");
       setSnackOpen(true)
+      localStorage.setItem('loginToken', result.data.token);
       return result;
     }).catch(e=>{
       setIsVerified(false);
