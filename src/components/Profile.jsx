@@ -15,7 +15,7 @@ const Profile = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [friendsData, setFriendsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { isLoggedIn, setSnackType, setSnackMessage, setSnackOpen } =
+  const { isLoggedIn, setSnackType, setSnackMessage, setSnackOpen ,userName } =
     useContext(DataContext);
   const history = useHistory();
   const handeleChange = async (e) => {
@@ -28,14 +28,14 @@ const Profile = () => {
         setFriendsData(data.data);
         setLoading(false);
         setSnackType("success");
-        setSnackMessage(data.data.message || "Data Fatched Successfully");
+        setSnackMessage(data.data.message || "Data Fetched Successfully");
         console.log(data.data.message);
         setSnackOpen(true);
       })
       .catch((error) => {
         console.log("error" ,error);
         setSnackType("error");
-        setSnackMessage(error.response.data.message ||"Oops an eroor occured !");
+        setSnackMessage(error.response.data.message ||"Oops an error occurred !");
         setSnackOpen(true);
         setLoading(false);
       });
@@ -50,7 +50,7 @@ const Profile = () => {
       setSnackMessage("Your FriendId Deleted Successfully");
     } catch (error) {
       setSnackType("error");
-      setSnackMessage("Oops an eroor occured !");
+      setSnackMessage("Oops an Error occurred !");
       setSnackOpen(true);
     }
   };
@@ -297,7 +297,7 @@ const Profile = () => {
             </div>
             <div class="flip-card-back p-5 ">
               <div className="form-item ">
-                <input type={"text"} name="username" value={"amit"} disabled />
+                <input type={"text"} name="username" value={userName} disabled />
               </div>
               <div className="form-item">
                 <input
@@ -316,6 +316,10 @@ const Profile = () => {
               </div>
               <div className="bg-black focus:bg-red-500">
                 <Button onClick={handlesubmit}>SUbmit</Button>
+              </div>
+              <br />
+              <div className="bg-black focus:bg-red-500" onClick={()=>{setFormOpen(false)}}>
+                <Button>Cancel</Button>
               </div>
             </div>
           </div>
