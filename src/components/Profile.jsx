@@ -72,11 +72,19 @@ const Profile = () => {
       body: JSON.stringify(formData),
     };
     fetch(url, options)
-      .then((data) => {
+      .then(async(result) => {
+        const data = await result.json()
+        setSnackType(data.status);
+        setSnackMessage(data.message || "Data Fetched Successfully");
+        console.log(data.message);
+        setSnackOpen(true);
+       if(data.status ==='success'){
         window.location.reload();
+       }
+        
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err)
       });
   };
 
@@ -303,7 +311,7 @@ const Profile = () => {
                 <input
                   type={"text"}
                   name="friendsId"
-                  placeholder={"Friend's User id"}
+                  placeholder={"https://leetcode.com/?"}
                   onChange={(e) => {
                     handeleChange(e);
                   }}
