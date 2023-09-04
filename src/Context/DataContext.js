@@ -7,6 +7,7 @@ export const DataContext = createContext();
 const DataContextProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [snackOpen, setSnackOpen] = useState(false);
+    const [userName, setUserName] = useState(false);
     const [snackType, setSnackType] = useState("");
     const [snackMessage, setSnackMessage] = useState("");
     if(localStorage.loginToken){
@@ -15,11 +16,13 @@ const DataContextProvider = ({ children }) => {
             console.log(response)
             if(response.data.status === "active"){
                 setIsLoggedIn(true)
+                setUserName(response.data.username)
+
             }
         })
     }
     return (
-        <DataContext.Provider value={{ isLoggedIn  ,snackOpen , snackType , snackMessage ,setSnackOpen ,setSnackType ,setSnackMessage}} >{children}</DataContext.Provider>
+        <DataContext.Provider value={{userName , isLoggedIn  ,snackOpen , snackType , snackMessage ,setSnackOpen ,setSnackType ,setSnackMessage}} >{children}</DataContext.Provider>
     )
 }
 
