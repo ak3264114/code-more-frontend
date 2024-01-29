@@ -10,15 +10,15 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   
 
 const SnackBar = () => {
-    const {snackOpen , snackType , snackMessage ,setSnackOpen} = useContext(DataContext)
+    const {snackOpen, setSnackOpen} = useContext(DataContext)
 
     const handleClose = () => {
       setSnackOpen(false);
     };
   return (
-    <Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity={snackType?snackType :"info"} sx={{ width: "300px" }}>
-        {snackMessage}
+    <Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
+      <Alert onClose={handleClose} severity={snackOpen?.type || "info"}>
+        {snackOpen?.message}
       </Alert>
     </Snackbar>
   );
