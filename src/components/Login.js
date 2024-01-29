@@ -7,30 +7,32 @@ import { useEffect } from "react";
 import { Button, CircularProgress } from "@mui/material";
 
 const Login = () => {
-  const { isLoggedIn, setSnackType, setSnackMessage, setSnackOpen } =useContext(DataContext);
+  const { isLoggedIn, setSnackOpen } =useContext(DataContext);
   const [requestSended,setRequestSended] = useState(false);
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [resData, setResData] = useState("");
   const history = useHistory();
 
-  async function handleSubmit() {
+  async function handleLogin() {
     setRequestSended(true);
     try {
       const response = await APIService.login(userName, password);
-      if (response.status === "succes") {
+      console.log(response)
+      if (response.status === "success") {
         localStorage.setItem("loginToken", response.token);
         history.push("/profile");
         setResData(response);
-        setSnackType("success");
-        setSnackMessage("Login Successfully");
-        setSnackOpen(true);
+        setSnackOpen({type : "success" , message : "Login Successfully"});
         setRequestSended(false);
       }
+      else{
+      setSnackOpen({type : "error" , message : response?.message || "An error occurred"});
+      setRequestSended(false);
+      return ;
+      }
     } catch (e) {
-      setSnackType("error");
-      setSnackMessage("some eroor occured !", e);
-      setSnackOpen(true);
+      setSnackOpen({type : "error" , message : "An error occurred !"});
       setRequestSended(false);
     }
   }
@@ -39,8 +41,6 @@ const Login = () => {
       history.push("/profile");
     }
   }, [isLoggedIn]);
-
-  console.log(resData);
   return (
     <>
       <div className="form-body">
@@ -76,11 +76,11 @@ const Login = () => {
               variant="text"
               color="success"
               onClick={() => {
-                handleSubmit();
+                handleLogin();
               }}
               sx={{ fontWeight: "bold", width: "100%" }}
             >
-              Signup
+              Login
             </Button>
           )}
           </div>

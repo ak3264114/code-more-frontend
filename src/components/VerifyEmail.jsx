@@ -6,7 +6,7 @@ import { CircularProgress } from "@mui/material";
 import { DataContext } from "../Context/DataContext";
 
 const VerifyEmail = () => {
-  const { setSnackType, setSnackMessage, setSnackOpen } =useContext(DataContext);
+  const {  setSnackOpen } =useContext(DataContext);
   const [isVerified, setIsVerified] = useState(false);
   const [isVerifiedData, setIsVerifiedData] = useState();
   let { token } = useParams();
@@ -14,17 +14,13 @@ const VerifyEmail = () => {
     APIService.verifyEmail(token).then(result => {
       setIsVerified(true);
       setIsVerifiedData("verified");
-      console.log(result);
-      setSnackType("success");
-      setSnackMessage(result.data.message ||"Email Verified Succesfully");
-      setSnackOpen(true)
+      setSnackOpen({type : "success" , message : result.data.message ||"Email Verified Succesfully"});
       localStorage.setItem('loginToken', result.data.token);
       return result;
     }).catch(e=>{
       setIsVerified(false);
-      setSnackType("error");
-      setSnackMessage(e.response.data.message ||"Something went wrong");
-      setSnackOpen(true)
+      setSnackOpen({type : "error" , message : e.response.data.message ||"Something went wrong"});
+
     })
   }, []);
 

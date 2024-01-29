@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 
 function Signup() {
-  const { isLoggedIn, setSnackType, setSnackMessage, setSnackOpen } =useContext(DataContext);
+  const { isLoggedIn, setSnackOpen } =useContext(DataContext);
   const [userData, setUserData] = useState();
   const [requestSended, setRequestSended] = useState(false);
   const history = useHistory();
@@ -22,16 +22,10 @@ function Signup() {
     setRequestSended(true);
     APIService.register(userData)
       .then((response) => {
-        setSnackType("success");
-        setSnackMessage(response.data.message ||"SignUp SuccessFully , Please Verify your email address :)");
-        setSnackOpen(true)
-        setRequestSended(false);
+        setSnackOpen({type : "success" , message :response.data.message ||"SignUp SuccessFully , Please Verify your email address :)"});
       })
-      .catch((error) => {
-        setSnackType("error");
-        setSnackMessage("some eroor occured !");
-        setSnackOpen(true)
-        setRequestSended(false);
+      .catch((error) => { 
+        setSnackOpen({type : "error" , message : "An error occurred"});
       });
   };
 

@@ -15,7 +15,7 @@ const Profile = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [friendsData, setFriendsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { isLoggedIn, setSnackType, setSnackMessage, setSnackOpen ,userName } =
+  const { isLoggedIn, setSnackOpen ,userName } =
     useContext(DataContext);
   const history = useHistory();
   const handeleChange = async (e) => {
@@ -27,17 +27,10 @@ const Profile = () => {
       .then((data) => {
         setFriendsData(data.data);
         setLoading(false);
-        setSnackType("success");
-        setSnackMessage(data.data.message || "Data Fetched Successfully");
-        console.log(data.data.message);
-        setSnackOpen(true);
+        setSnackOpen({type : "success" , message : data.data.message || "Data Fetched Successfully"});
       })
       .catch((error) => {
-        console.log("error" ,error);
-        setSnackType("error");
-        setSnackMessage(error.response.data.message ||"Oops an error occurred !");
-        setSnackOpen(true);
-        setLoading(false);
+        setSnackOpen({type : "error" , message : error.response.data.message ||"Oops an error occurred !"});
       });
   }, []);
   const deleteFriendId = async (friendId) => {
@@ -45,13 +38,9 @@ const Profile = () => {
       const result = await APIService.deleteFriendId(friendId);
       console.log(result);
       window.location.reload();
-      setSnackType("success");
-      setSnackOpen(true);
-      setSnackMessage("Your FriendId Deleted Successfully");
+      setSnackOpen({type : "success" , message :"Your FriendId Deleted Successfully"});
     } catch (error) {
-      setSnackType("error");
-      setSnackMessage("Oops an Error occurred !");
-      setSnackOpen(true);
+      setSnackOpen({type : "error" , message : "An error occurred !"});
     }
   };
 
@@ -74,10 +63,7 @@ const Profile = () => {
     fetch(url, options)
       .then(async(result) => {
         const data = await result.json()
-        setSnackType(data.status);
-        setSnackMessage(data.message || "Data Fetched Successfully");
-        console.log(data.message);
-        setSnackOpen(true);
+        setSnackOpen({type : "error" , message : data.message || "Data Fetched Successfully"});
        if(data.status ==='success'){
         window.location.reload();
        }
