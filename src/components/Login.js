@@ -5,7 +5,7 @@ import { DataContext } from "../Context/DataContext";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 
 const Login = () => {
-  const { isLoggedIn, setSnackOpen } = useContext(DataContext);
+  const { isLoggedIn, setIsLoggedIn, setSnackOpen } = useContext(DataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -28,7 +28,7 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -40,45 +40,46 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.username.trim()) {
       newErrors.username = "Username is required";
     }
-    
+
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
-    
+
     try {
       const response = await APIService.login(formData.username, formData.password);
-      
+
       if (response.status === "success") {
         localStorage.setItem("loginToken", response.token);
         setSnackOpen({ type: "success", message: "Login successful!" });
+        setIsLoggedIn(true);
         history.push("/profile");
       } else {
-        setSnackOpen({ 
-          type: "error", 
-          message: response?.message || "Invalid username or password" 
+        setSnackOpen({
+          type: "error",
+          message: response?.message || "Invalid username or password"
         });
       }
     } catch (error) {
-      setSnackOpen({ 
-        type: "error", 
-        message: "Something went wrong. Please try again later." 
+      setSnackOpen({
+        type: "error",
+        message: "Something went wrong. Please try again later."
       });
       console.error("Login error:", error);
     } finally {
@@ -99,7 +100,7 @@ const Login = () => {
             Sign in to access your account
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
@@ -114,9 +115,8 @@ const Login = () => {
                   autoComplete="username"
                   value={formData.username}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full px-3 py-2 border ${
-                    errors.username ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+                  className={`appearance-none relative block w-full px-3 py-2 border ${errors.username ? 'border-red-300' : 'border-gray-300'
+                    } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                   placeholder="Enter your username"
                 />
                 {errors.username && (
@@ -124,7 +124,7 @@ const Login = () => {
                 )}
               </div>
             </div>
-            
+
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
@@ -137,9 +137,8 @@ const Login = () => {
                   autoComplete="current-password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none relative block w-full px-3 py-2 border ${
-                    errors.password ? 'border-red-300' : 'border-gray-300'
-                  } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pr-10`}
+                  className={`appearance-none relative block w-full px-3 py-2 border ${errors.password ? 'border-red-300' : 'border-gray-300'
+                    } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pr-10`}
                   placeholder="Enter your password"
                 />
                 <button
@@ -164,9 +163,8 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                isLoading ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'
-              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isLoading ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'
+                } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <LogIn className="h-5 w-5 text-indigo-300" aria-hidden="true" />
@@ -174,7 +172,7 @@ const Login = () => {
               {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
-          
+
           <div className="flex items-center justify-between text-sm">
             <div className="text-indigo-600 hover:text-indigo-500">
               <Link to="/forgot-password">Forgot your password?</Link>

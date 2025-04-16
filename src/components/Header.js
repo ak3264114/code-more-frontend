@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { DataContext } from "../Context/DataContext";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, User, X } from "lucide-react";
+
 
 function Header() {
-  const { isLoggedIn } = useContext(DataContext);
+  const { isLoggedIn, userName } = useContext(DataContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -34,7 +35,7 @@ function Header() {
                   <Menu size={24} />
                 </button>
               </div>
-              
+
               {/* Logo */}
               <div className="flex-shrink-0 flex items-center ml-4 sm:ml-0">
                 <Link to="/" className="text-white font-bold text-xl">
@@ -42,16 +43,21 @@ function Header() {
                 </Link>
               </div>
             </div>
-            
+
             {/* Desktop Navigation Links */}
             <div className="hidden sm:flex sm:items-center">
               {isLoggedIn ? (
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 text-white hover:bg-indigo-700 rounded-md transition-colors"
-                >
-                  Logout
-                </button>
+                <div className="flex items-center space-x-4">
+                  <Link to="/profile"  > <button className="flex items-center gap-4 text-white hover:bg-black hover:bg-opacity-10 py-2 px-4 rounded-md">{userName} <User /></button> </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 text text-white hover:bg-indigo-700 rounded-md transition-colors"
+                    title="Logout"
+                  >
+                    <LogOut />
+                  </button>
+
+                </div>
               ) : (
                 <>
                   <Link
@@ -78,7 +84,7 @@ function Header() {
         <div className="sm:hidden absolute w-full z-50">
           <div className="bg-white shadow-lg rounded-b-lg">
             <div className="flex justify-end p-4">
-              <button 
+              <button
                 onClick={handleDrawerToggle}
                 className="text-gray-500 hover:text-gray-700"
               >
